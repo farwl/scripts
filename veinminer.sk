@@ -39,7 +39,6 @@ function veinMine(b: block, p: player):
 		set {_c} to "%loop-block%"
 		replace all "ore" in {_c} with "" if loop-block is coal ore, lapis lazuli ore, redstone ore, diamond ore or emerald ore
 		set {_c} to {_c} parsed as item
-		drop {_a} of {_c} at loop-block 
-		break loop-block
+		break loop-block naturally using player's tool
 		damage tool of {_p} by 1
 		veinMine(loop-block, {_p})
