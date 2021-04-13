@@ -9,6 +9,9 @@ Options:
 	shovel: sand or gravel
 	# Set the blocks that will be affected (Mined in veins) by tools above.
 
+	radius: 1.5
+	# how far should veinminer reach
+
 # CONFIG
 
 # CODE #
@@ -30,8 +33,9 @@ on mine:
 	veinMine(event-block, player) if tool is any hoe
 
 function veinMine(b: block, p: player):
-	loop all blocks in radius 1.5 of {_b}:
-		set {_a} to random integer from 0 to level of fortune of {_p}'s tool if level of fortune of {_p}'s tool > 0
+	loop all blocks in radius {@radius} of {_b}:
+		set {_fortune} to level of fortune of {_p}'s tool ? 0
+		set {_a} to random integer between 0 and {_fortune}
 		set {_a::*} to {pickaxe::*} if {_p}'s tool is any pickaxe
 		set {_a::*} to {axe::*} if {_p}'s tool is any axe
 		set {_a::*} to {shovel::*} if {_p}'s tool is any shovel
@@ -39,6 +43,6 @@ function veinMine(b: block, p: player):
 		set {_c} to "%loop-block%"
 		replace all "ore" in {_c} with "" if loop-block is coal ore, lapis lazuli ore, redstone ore, diamond ore or emerald ore
 		set {_c} to {_c} parsed as item
-		break loop-block naturally using player's tool
+		break loop-block
 		damage tool of {_p} by 1
 		veinMine(loop-block, {_p})
